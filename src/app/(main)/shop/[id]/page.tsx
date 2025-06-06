@@ -5,14 +5,8 @@ import { products } from "@/data/products"; // Import the centralized products l
 import { useState } from "react";
 import { useCart } from "@/components/CartContext";
 
-interface ProductDetailProps {
-  params: {
-    id: number;
-  };
-}
-
-export default function ProductDetail({ params }: ProductDetailProps) {
-  const product = products.find((p) => p.id == params.id);
+export default function ProductDetail({ params }: { params: { id: string } }) {
+  const product = products.find((p) => p.id == parseInt(params.id));
   const SIZES = product?.sizes || [];
   const [selectedSize, setSelectedSize] = useState(SIZES[0]); // defaults to first size in list
   const [quantity, setQuantity] = useState(1);
