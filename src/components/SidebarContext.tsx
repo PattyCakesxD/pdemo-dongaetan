@@ -5,6 +5,7 @@ const SIDEBAR_KEY = "sidebar-expanded";
 
 export const SidebarContext = createContext({
   expanded: true,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setExpanded: (_: boolean) => {},
 });
 

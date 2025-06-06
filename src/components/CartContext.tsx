@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { products as allProducts, Product } from "@/data/products";
+import { products as allProducts } from "@/data/products";
 
 // Define the shape of an item in the cart
 export interface CartItem {
