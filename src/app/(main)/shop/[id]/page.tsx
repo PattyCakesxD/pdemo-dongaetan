@@ -4,21 +4,11 @@ import Image from "next/image";
 import { products } from "@/data/products"; // Import the centralized products list
 import { useState } from "react";
 import { useCart } from "@/components/CartContext";
+import { useParams } from "next/navigation";
 
-interface ProductDetailProps {
-  params: {
-    id: string;
-  };
-}
-
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    id: String(product.id),
-  }));
-}
-
-export default function ProductDetail({ params }: ProductDetailProps) {
-  const product = products.find((p) => p.id == parseInt(params.id));
+export default function ProductDetail() {
+  const { id } = useParams();
+  const product = products.find((p) => p.id == parseInt(id as string));
   const SIZES = product?.sizes || [];
   const [selectedSize, setSelectedSize] = useState(SIZES[0]); // defaults to first size in list
   const [quantity, setQuantity] = useState(1);

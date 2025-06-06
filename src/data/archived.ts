@@ -12,14 +12,16 @@ export interface ArchivedCollection {
 
 export const archivedItems: ArchivedCollection = {
   "2025": [
-    { name: "Product", image: TestProduct },
-    { name: "Product", image: TestProduct },
-    { name: "Product", image: TestProduct },
-    { name: "Product", image: TestProduct },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
   ],
   "2024": [
-    { name: "Product", image: TestProduct },
-    { name: "Product", image: TestProduct },
-    { name: "Product", image: TestProduct },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
+    { name: "Product", image: TestProduct.src },
   ],
 };
