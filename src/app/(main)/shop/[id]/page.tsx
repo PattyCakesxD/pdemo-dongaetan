@@ -7,12 +7,12 @@ import { useCart } from "@/components/CartContext";
 
 interface ProductDetailProps {
   params: {
-    id: string;
+    id: number;
   };
 }
 
 export default function ProductDetail({ params }: ProductDetailProps) {
-  const product = products.find((p) => p.id == parseInt(params.id));
+  const product = products.find((p) => p.id == params.id);
   const SIZES = product?.sizes || [];
   const [selectedSize, setSelectedSize] = useState(SIZES[0]); // defaults to first size in list
   const [quantity, setQuantity] = useState(1);

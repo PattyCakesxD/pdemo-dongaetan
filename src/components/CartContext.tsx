@@ -50,7 +50,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       } else {
         const productDetails = allProducts.find((p) => p.id === newItem.id);
         if (!productDetails) return prevItems;
-        const imageSrc = typeof productDetails.image === 'string' ? productDetails.image : productDetails.image.src;
+        const imageSrc =
+          typeof productDetails.image === "string"
+            ? productDetails.image
+            : productDetails.image.src;
         return [
           ...prevItems,
           {
@@ -67,9 +70,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const removeFromCart = (productId: number, size: string) => {
     setCartItems((prevItems) =>
-      prevItems.filter(
-        (item) => !(item.id === productId && item.size === size)
-      )
+      prevItems.filter((item) => !(item.id === productId && item.size === size))
     );
   };
 
