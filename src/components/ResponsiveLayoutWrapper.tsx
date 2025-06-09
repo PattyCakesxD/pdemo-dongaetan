@@ -14,7 +14,6 @@ const TITLES: Record<string, string> = {
   "/archive": "Archive",
   "/about": "About",
   "/contact": "Contact",
-  // ...add more as needed
 };
 
 export default function ResponsiveLayoutWrapper({

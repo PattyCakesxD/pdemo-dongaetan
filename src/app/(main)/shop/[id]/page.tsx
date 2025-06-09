@@ -10,7 +10,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const product = products.find((p) => p.id == parseInt(id as string));
   const SIZES = product?.sizes || [];
-  const [selectedSize, setSelectedSize] = useState(SIZES[0]); // defaults to first size in list
+  const [selectedSize, setSelectedSize] = useState(SIZES[0]);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
@@ -44,9 +44,13 @@ export default function ProductDetail() {
         </div>
         <div className="flex-1 flex flex-col justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <h2 className="text-xl md:text-2xl text-semibold">{product.name}</h2>
+            <h2 className="text-xl md:text-2xl text-semibold">
+              {product.name}
+            </h2>
             <p className="text-md md:text-lg  text-gray-400">{`$${product.price}`}</p>
-            <p className="text-sm md:text-md text-gray-400 break-all">{product.description}</p>
+            <p className="text-sm md:text-md text-gray-400 break-all">
+              {product.description}
+            </p>
           </div>
 
           {/* Sizes */}
