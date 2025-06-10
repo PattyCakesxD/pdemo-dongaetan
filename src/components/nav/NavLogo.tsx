@@ -1,4 +1,4 @@
-export function MenuLogo() {
+export function NavLogo() {
   return (
     <div className="grid grid-cols-3 gap-2 mb-6 w-full max-w-md px-4">
       {"DONGAETAN".split("").map((letter, i) => (

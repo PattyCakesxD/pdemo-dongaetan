@@ -1,5 +1,5 @@
 "use client";
-import { MenuLogo } from "./NavLogo";
+import { NavLogo } from "./NavLogo";
 import { NavItem } from "./NavItem";
 
 export function DesktopSidebar() {
@@ -13,7 +13,7 @@ export function DesktopSidebar() {
     >
       {/* This margin pushes content below the icon controlled by the parent */}
       <div className="flex flex-col items-center pb-4 gap-2 mt-20">
-        <MenuLogo />
+        <NavLogo />
       </div>
       <nav className="flex-1 px-4">
         <ul className="flex flex-col gap-2">
