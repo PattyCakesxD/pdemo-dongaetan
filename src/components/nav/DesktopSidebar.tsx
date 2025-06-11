@@ -12,8 +12,7 @@ export function DesktopSidebar(props: NavMenuProps) {
   return (
     <div
       className="
-        h-screen bg-white
-        flex flex-col
+        h-screen flex flex-col
         overflow-hidden px-[1vw] pt-6 2xl:pt-8 pb-3 2xl:pb-4 gap-6 2xl:gap-8"
       {...restProps}
     >
@@ -23,7 +22,7 @@ export function DesktopSidebar(props: NavMenuProps) {
       >
         <span
           onClick={() => setExpanded(!expanded)}
-          className="cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
+          className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors ease-fluid duration-100"
           role="button"
           aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
           tabIndex={0}
@@ -59,7 +58,7 @@ export function DesktopSidebar(props: NavMenuProps) {
       >
         <span className="relative inline-block pb-[1px] whitespace-nowrap">
           Designed By Verdugo Web Services
-          <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-black transition-all duration-100 ease-fluid group-hover:w-full" />
+          <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-foreground transition-all duration-100 ease-fluid group-hover:w-full" />
         </span>
       </a>
     </div>

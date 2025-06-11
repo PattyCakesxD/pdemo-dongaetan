@@ -36,7 +36,7 @@ export default function ResponsiveLayoutWrapper({
       <aside
         className={`
           hidden lg:block transition-all duration-300 ease-fluid
-          h-screen sticky top-0 border-r
+          h-screen sticky top-0 border-r border-activeGray
           ${expanded ? "w-full lg:w-[381px]" : "w-0 border-r-0"}
         `}
         style={{
@@ -54,7 +54,7 @@ export default function ResponsiveLayoutWrapper({
       </aside>
 
       {/* Main content area */}
-      <main className={`flex-1 bg-white flex flex-col`}>
+      <main className={`flex-1 flex flex-col`}>
         <StickyHeader title={title} />
         {isHome && (
           // Mobile Menu - now visible ONLY on mobile (below lg)

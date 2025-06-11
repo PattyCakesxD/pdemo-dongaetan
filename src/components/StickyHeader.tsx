@@ -68,7 +68,7 @@ export function StickyHeader({ title = "" }) {
         return (
           <button
             onClick={() => setExpanded(true)}
-            className="cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
+            className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
             aria-label="Expand sidebar"
           >
             <PanelLeft className="w-7 h-7" />
@@ -81,7 +81,7 @@ export function StickyHeader({ title = "" }) {
           return (
             <button
               onClick={handleBack}
-              className="cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
+              className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
               aria-label="Go back"
             >
               <ChevronLeft className="w-7 h-7" /> {/* Back Arrow icon */}
@@ -98,7 +98,7 @@ export function StickyHeader({ title = "" }) {
         return (
           <button
             onClick={handleBack}
-            className="cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
+            className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
             aria-label="Go back"
           >
             <ChevronLeft className="w-7 h-7" /> {/* Back Arrow icon */}
@@ -110,31 +110,28 @@ export function StickyHeader({ title = "" }) {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-30 bg-white flex items-center py-6 2xl:py-8 px-[1vw]">
+    <header className="sticky top-0 left-0 right-0 z-30 flex items-center py-6 2xl:py-8 px-[1vw]">
       {/* Left-side slot for the dynamically rendered button */}
       <div className="flex items-center w-7 h-7">{renderLeftButton()}</div>
 
       {/* Centered title */}
       <div className="flex-1 flex justify-center items-center">
-        <span className="font-medium text-lg text-black truncate">{title}</span>
+        <span className="font-normal text-lg text-foreground truncate">
+          {title}
+        </span>
       </div>
       {/* Shopping cart icon */}
       <button
-        className="relative ml-auto flex items-center cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
+        className="relative ml-auto gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
         onClick={toggleCart}
       >
-        {/* <ShoppingCart
-          className={`w-7 h-7 ${
-            cartCount > 0 ? "text-indigo-400" : "text-gray-400"
-          }`}
-        />
+        <ShoppingCart className="size-7" />
 
         {cartCount > 0 && (
-          <span className="absolute -top-1 -right-2 bg-indigo-400 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
             {cartCount}
           </span>
-        )} */}
-        <ShoppingCart className="size-7" />
+        )}
       </button>
     </header>
   );

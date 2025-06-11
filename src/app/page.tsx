@@ -10,9 +10,9 @@ export default function Home() {
         <h1 className="text-7xl xl:text-8xl font-semibold leading-none">
           DONGAETAN
         </h1>
-        <div className="text-2xl cursor-pointer pb-[2px] relative">
+        <div className="text-2xl cursor-pointer pb-[2px] relative text-secondaryLabel">
           {"Shop ›"}
-          <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-gray-500 transition-all duration-100 ease-fluid group-hover:w-full" />
+          <span className="absolute bottom-0 right-0 w-0 h-0.5 bg-secondaryLabel transition-all duration-100 ease-fluid group-hover:w-full" />
         </div>
       </Link>
     </div>

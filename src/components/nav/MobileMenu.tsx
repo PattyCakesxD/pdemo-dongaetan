@@ -8,9 +8,7 @@ export interface NavMenuProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 export function MobileMenu(props: NavMenuProps) {
-  // Accept NavMenuProps
-  // Destructure 'items' from props, providing DEFAULT_MOBILE_NAV_ITEMS as a fallback
-  const { items = DEFAULT_MOBILE_NAV_ITEMS, ...restProps } = props;
+  const { items = DEFAULT_NAV_ITEMS, ...restProps } = props;
 
   return (
     <div
@@ -36,35 +34,3 @@ export function MobileMenu(props: NavMenuProps) {
     </div>
   );
 }
-
-// Default navigation items array for MobileMenu, stored beneath the export
-const DEFAULT_MOBILE_NAV_ITEMS: NavItemProps[] = [
-  {
-    href: "/shop",
-    title: "Shop",
-    subtitle: "Shop",
-    avatar: "/profile-picture.png", // Corrected path as per previous context
-    time: "10:00",
-  },
-  {
-    href: "/archive",
-    title: "Archive",
-    subtitle: "Archive",
-    avatar: "/images/archive.png",
-    time: "10:00",
-  },
-  {
-    href: "/about",
-    title: "About",
-    subtitle: "About",
-    avatar: "/images/about.png",
-    time: "10:00",
-  },
-  {
-    href: "/contact",
-    title: "Contact",
-    subtitle: "Contact",
-    avatar: "/images/contact.png",
-    time: "10:00",
-  },
-];

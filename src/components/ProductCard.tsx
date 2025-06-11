@@ -15,7 +15,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
       href={url}
-      className="flex flex-col relative items-center text-center overflow-visible transition-all duration-200 rounded-xl px-1 pt-4 pb-2 hover:bg-gray-100 active:bg-gray-200 ease-fluid"
+      className="flex flex-col relative items-center text-center overflow-visible transition-all duration-200 rounded-xl px-1 pt-4 pb-2 hover:bg-hoverGray active:bg-activeGray ease-fluid"
     >
       <Image
         src={images[0] || ""}

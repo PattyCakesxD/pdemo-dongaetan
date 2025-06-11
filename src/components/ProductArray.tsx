@@ -33,7 +33,9 @@ const ProductArray: React.FC<ProductArrayProps> = ({
             <h2 className="text-2xl leading-tight font-semibold">{title}</h2>
           )}
           {date && (
-            <h3 className="text-2xl leading-tight font-normal">{date}</h3>
+            <h3 className="text-2xl leading-tight font-normal text-secondaryLabel">
+              {date}
+            </h3>
           )}
         </div>
       )}

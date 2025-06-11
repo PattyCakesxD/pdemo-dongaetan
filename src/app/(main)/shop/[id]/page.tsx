@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { shopProducts } from "@/data/products"; // Import the centralized products list
+import { shopProducts } from "@/data/products";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useParams } from "next/navigation";
@@ -43,19 +43,19 @@ export default function ProductDetail() {
           />
         </div>
         <div className="flex-1 flex flex-col justify-between gap-4">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <h2 className="text-xl md:text-2xl text-semibold">
               {product.name}
             </h2>
-            <p className="text-md md:text-lg  text-gray-400">{`$${product.price}`}</p>
-            <p className="text-sm md:text-md text-gray-400 break-all">
+            <p className="text-base md:text-lg text-secondaryLabel">{`$${product.price}`}</p>
+            <p className="text-sm md:text-base text-secondaryLabel break-all">
               {product.description}
             </p>
           </div>
 
           {/* Sizes */}
           <div className="flex flex-col">
-            <div className="text-xs font-semibold text-gray-500 mb-1">Size</div>
+            <div className="text-xs mb-1">Size</div>
             <div className="flex gap-5 text-sm md:text-md">
               {SIZES.map((size) => (
                 <span
@@ -63,8 +63,8 @@ export default function ProductDetail() {
                   onClick={() => setSelectedSize(size)}
                   className={`cursor-pointer select-none transition-colors duration-100 whitespace-nowrap ${
                     selectedSize === size
-                      ? "text-black font-semibold"
-                      : "text-gray-400"
+                      ? "font-semibold"
+                      : "text-secondaryLabel hover:text-tertiaryLabel"
                   }`}
                 >
                   {size}
@@ -75,11 +75,11 @@ export default function ProductDetail() {
 
           {/* Quantity */}
           <div className="flex flex-col">
-            <div className="text-xs font-semibold text-gray-500 mb-1">QTY</div>
+            <div className="text-xs mb-1">QTY</div>
             <select
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-20 border rounded-md py-1 px-2 text-md"
+              className="w-20 border border-tertiaryLabel rounded-md py-1 px-2 text-md cursor-pointer"
             >
               {[...Array(10)].map((_, idx) => (
                 <option key={idx + 1} value={idx + 1}>
@@ -90,13 +90,13 @@ export default function ProductDetail() {
           </div>
 
           {/* Checkout/Add to Cart */}
-          <div className="flex flex-col gap-2">
-            <button className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-8 rounded-xl text-md transition-colors duration-100 cursor-pointer">
+          <div className="flex flex-col gap-1">
+            <button className="bg-primaryBlue hover:bg-hoverBlue text-background py-2 w-full rounded-lg transition-colors duration-100 ease-fluid cursor-pointer">
               Checkout
             </button>
             <button
               onClick={handleAddToCart}
-              className="bg-white text-indigo-500 py-2 px-8 rounded-xl text-md border border-indigo-500 hover:bg-indigo-50 transition-colors duration-100 cursor-pointer"
+              className="text-primaryBlue py-2 w-full rounded-lg border border-primaryBlue hover:bg-hoverBlueBg transition-colors duration-100 ease-fluid cursor-pointer"
             >
               Add to Cart
             </button>
