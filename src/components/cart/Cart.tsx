@@ -1,8 +1,70 @@
 "use client";
 
 import Image from "next/image";
-import { useCart } from "../CartContext";
+import { useCart } from "./CartContext";
 import { X, Plus, Minus, Trash2 } from "lucide-react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  cubicBezier,
+} from "motion/react";
+import { useRef } from "react";
+import { CartItem } from "./CartItem";
+
+const easeFluid = cubicBezier(0.6, 0.01, -0.05, 0.9);
+
+const mainCartDialogVariants = {
+  open: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.25, ease: easeFluid },
+  },
+  closed: {
+    opacity: 0,
+    scale: 1,
+    transition: { duration: 0.25, ease: easeFluid },
+  },
+};
+
+const cartContentContainerVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delayChildren: 0.05,
+      staggerChildren: 0.03,
+      staggerDirection: -1,
+    },
+  },
+  closed: {
+    opacity: 0,
+    y: 100,
+    transition: {
+      staggerChildren: 0.03,
+      staggerDirection: 1,
+      when: "afterChildren",
+    },
+  },
+};
+
+const itemVariants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: easeFluid },
+  },
+  closed: {
+    opacity: 0,
+    y: 30,
+    transition: { duration: 0.2, ease: easeFluid },
+  },
+};
+
+const closeButtonVariants = {
+  open: { opacity: 1, transition: { duration: 0.2, ease: easeFluid } },
+  closed: { opacity: 0, transition: { duration: 0.2, ease: easeFluid } },
+};
 
 export function Cart() {
   const {
@@ -19,116 +81,141 @@ export function Cart() {
     0
   );
 
-  return (
-    <div
-      className={`
-        fixed inset-0 z-40 bg-white/85 backdrop-blur-sm
-        flex items-center justify-center lg:items-end lg:justify-end
-        transition-opacity duration-300
-        ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }
-      `}
-      onClick={toggleCart}
-      aria-hidden={!isOpen}
-    >
-      <div
-        className={`
-          relative rounded-xl h-full w-full max-w-md m-4
-          flex flex-col transition-all duration-300
-          ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}
-        `}
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
-        {/* Close Button */}
-        <div className="flex flex-row-reverse items-start p-4 pt-8">
-          <button
-            onClick={toggleCart}
-            className="text-gray-400 hover:text-gray-600"
-            aria-label="Close cart"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        {/* Cart Items: stack from bottom up */}
-        <div className="flex-1 overflow-y-auto p-8 pt-10 flex flex-col justify-end">
-          {cartItems.length === 0 ? (
-            <div className="text-center mt-auto">
-              <p className="text-gray-500">Your cart is empty.</p>
-            </div>
-          ) : (
-            <ul className="flex flex-col-reverse">
-              {[...cartItems].reverse().map((item) => (
-                <li
-                  key={`${item.id}-${item.size}`}
-                  className="flex justify-between items-center py-4"
-                >
-                  <div className="flex items-center">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={64}
-                      height={64}
-                      className="rounded-lg object-cover"
-                    />
-                    <div className="ml-4 flex-1">
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-xs text-gray-500 mb-2">
-                        Size: {item.size}
-                      </p>
-                      <div className="flex items-center gap-4">
-                        {/* Quantity Controls */}
-                        <div className="flex items-center gap-3 border rounded-full">
-                          <button
-                            onClick={() => decreaseQuantity(item.id, item.size)}
-                            className="p-2 text-gray-500 hover:text-black rounded-full hover:bg-gray-100 transition-colors"
-                          >
-                            <Minus size={16} />
-                          </button>
-                          <span className="text-sm font-medium w-4 text-center select-none">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => increaseQuantity(item.id, item.size)}
-                            className="p-2 text-gray-500 hover:text-black rounded-full hover:bg-gray-100 transition-colors"
-                          >
-                            <Plus size={16} />
-                          </button>
-                        </div>
-                        {/* Remove Button */}
-                        <button
-                          onClick={() => removeFromCart(item.id, item.size)}
-                          className="p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-gray-100 transition-colors"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="font-semibold text-gray-700">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
 
-        {/* Cart Footer */}
-        <div className="p-6 pt-4">
-          <div className="flex justify-between font-semibold text-lg mb-4">
-            <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)} USD</span>
-          </div>
-          <button className="w-full bg-[#5A6CA5] hover:bg-[#5A6CA5]/80 text-white py-3 rounded-xl text-lg cursor-pointer">
-            Checkout
-          </button>
-        </div>
-      </div>
-    </div>
+  const controlledCartContentContainerVariants = {
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delayChildren: 0.05,
+        staggerChildren: 0.03,
+        staggerDirection: -1,
+      },
+      onAnimationComplete: () => {
+        if (scrollableDivRef.current) {
+          scrollableDivRef.current.style.overflowY = "auto";
+        }
+      },
+    },
+    closed: {
+      opacity: 0,
+      y: 100,
+      transition: {
+        staggerChildren: 0.03,
+        staggerDirection: 1,
+        when: "afterChildren",
+      },
+      onAnimationStart: () => {
+        if (scrollableDivRef.current) {
+          scrollableDivRef.current.style.overflowY = "hidden";
+        }
+      },
+    },
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          className={`
+            fixed inset-0 z-40 bg-background/85 backdrop-blur-sm
+            flex items-center justify-center lg:items-end lg:justify-end
+            transition-all duration-300
+            overflow-hidden
+          `}
+          onClick={toggleCart}
+          aria-hidden={!isOpen}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            variants={mainCartDialogVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className={`
+              relative rounded-xl h-full w-full max-w-md
+              flex flex-col
+              overflow-hidden
+            `}
+            role="dialog"
+            aria-modal="true"
+          >
+            <motion.div
+              variants={closeButtonVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="flex flex-row-reverse items-start py-6 2xl:py-8 px-[5vw] lg:px-[1vw]"
+            >
+              <button
+                onClick={toggleCart}
+                className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                aria-label="Close cart"
+              >
+                <X className="size-7" />
+              </button>
+            </motion.div>
+
+            <motion.div
+              variants={controlledCartContentContainerVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="flex-1 flex flex-col"
+            >
+              <div
+                ref={scrollableDivRef}
+                className="flex-1 px-[5vw] lg:px-[1vw] flex justify-end flex-col"
+              >
+                {cartItems.length === 0 ? (
+                  <motion.div
+                    variants={itemVariants}
+                    className="text-center mt-auto"
+                  >
+                    <p className="text-gray-500">Your cart is empty.</p>
+                  </motion.div>
+                ) : (
+                  <ul className="flex flex-col">
+                    {[...cartItems].reverse().map((item) => (
+                      <CartItem // <--- Use CartItem component here
+                        key={`${item.id}-${item.size}`}
+                        item={item}
+                        itemVariants={itemVariants}
+                        increaseQuantity={increaseQuantity}
+                        decreaseQuantity={decreaseQuantity}
+                        removeFromCart={removeFromCart}
+                        toggleCart={toggleCart} // <--- Pass toggleCart to CartItem
+                      />
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div
+                className="px-[5vw] lg:px-[1vw] pt-4 pb-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <motion.div
+                  variants={itemVariants}
+                  className="flex justify-between font-semibold text-lg mb-4"
+                >
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)} USD</span>
+                </motion.div>
+                <motion.button
+                  variants={itemVariants}
+                  className="w-full bg-[#5A6CA5] hover:bg-[#5A6CA5]/80 text-white py-3 rounded-xl text-lg cursor-pointer"
+                >
+                  Checkout
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

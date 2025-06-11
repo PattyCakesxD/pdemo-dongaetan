@@ -5,8 +5,12 @@ import { MobileMenu } from "@/components/nav/MobileMenu";
 import { StickyHeader } from "@/components/StickyHeader";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/components/SidebarContext";
-import { SquareSplitHorizontal, SeparatorVertical } from "lucide-react";
 import { Cart } from "@/components/cart/Cart";
+// Assuming you've reverted the ref-based width animation for now,
+// as the user mentioned the previous solution wasn't "the same".
+// If you want to re-add the "hug" width animation, you'd apply the
+// useEffect/useState/useRef logic from the previous solution.
+// For this change, we'll focus on the breakpoint.
 
 const TITLES: Record<string, string> = {
   "/": "",
@@ -14,7 +18,6 @@ const TITLES: Record<string, string> = {
   "/archive": "Archive",
   "/about": "About",
   "/contact": "Contact",
-  // ...add more as needed
 };
 
 export default function ResponsiveLayoutWrapper({
@@ -25,43 +28,21 @@ export default function ResponsiveLayoutWrapper({
   const pathname = usePathname();
   const isHome = pathname === "/";
   const title = TITLES[pathname] || "";
-  const { expanded, setExpanded } = useSidebar();
+  const { expanded } = useSidebar();
 
   return (
     <div className="flex min-h-screen">
-      {/* Desktop sidebar container */}
+      {/* Desktop sidebar container - now visible from lg and up */}
       <aside
         className={`
-          hidden md:block transition-all duration-300 ease-in-out
-          h-screen sticky top-0 border-r
-          ${expanded ? "w-full md:w-72 lg:w-80 xl:w-96" : "w-20 border-r-0"}
+          hidden lg:block transition-all duration-300 ease-fluid
+          h-screen sticky top-0 border-r border-activeGray
+          ${expanded ? "w-full lg:w-[381px]" : "w-0 border-r-0"}
         `}
         style={{
           transitionProperty: "width",
         }}
       >
-        {/* Collapse/Expand Icon */}
-        <div
-          className="
-            absolute top-0 left-0 z-50 w-20 h-20
-            flex items-center justify-center
-          "
-        >
-          <span
-            onClick={() => setExpanded(!expanded)}
-            className="cursor-pointer text-indigo-400 hover:text-indigo-500 transition-colors duration-100"
-            role="button"
-            aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
-            tabIndex={0}
-          >
-            {expanded ? (
-              <SquareSplitHorizontal className="w-8 h-8" />
-            ) : (
-              <SeparatorVertical className="w-8 h-8" />
-            )}
-          </span>
-        </div>
-
         {/* Sidebar content, which fades out when collapsed */}
         <div
           className={`transition-opacity duration-200 h-full ${
@@ -73,14 +54,16 @@ export default function ResponsiveLayoutWrapper({
       </aside>
 
       {/* Main content area */}
-      <main className={`flex-1 bg-white flex flex-col`}>
+      <main className={`flex-1 flex flex-col`}>
         <StickyHeader title={title} />
         {isHome && (
-          <div className="block md:hidden flex-1">
+          // Mobile Menu - now visible ONLY on mobile (below lg)
+          <div className="block lg:hidden flex-1">
             <MobileMenu />
           </div>
         )}
-        <div className={`${isHome ? "hidden md:block" : "block"} flex-1`}>
+        {/* Main content - hides on mobile when homepage, otherwise always block */}
+        <div className={`${isHome ? "hidden lg:block" : "block"} flex-1`}>
           {children}
         </div>
       </main>

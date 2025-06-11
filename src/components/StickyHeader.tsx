@@ -1,21 +1,43 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
-import { ShoppingCart, ChevronLeft } from "lucide-react";
-import { useCart } from "./CartContext";
+import { ShoppingCart, ChevronLeft, PanelLeft } from "lucide-react";
+import { useCart } from "./cart/CartContext";
+import { useSidebar } from "@/components/SidebarContext";
+import { useEffect, useState } from "react";
 
 const PARENTS: Record<string, string> = {
   "/shop": "/",
   "/archive": "/",
   "/about": "/",
   "/contact": "/",
-  // For dynamic routes, use patterns below.
 };
 
 export function StickyHeader({ title = "" }) {
   const router = useRouter();
   const pathname = usePathname();
   const { cartItems, toggleCart } = useCart();
+  const { expanded, setExpanded } = useSidebar();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  // State to track if it's desktop, initialized on client-side
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    // Only run on client-side to access window object
+    if (typeof window !== "undefined") {
+      const checkIsDesktop = () => {
+        // Tailwind's 'md' breakpoint is 768px
+        setIsDesktop(window.innerWidth >= 768);
+      };
+
+      checkIsDesktop(); // Check initially
+      window.addEventListener("resize", checkIsDesktop); // Update on resize
+
+      return () => {
+        window.removeEventListener("resize", checkIsDesktop); // Clean up
+      };
+    }
+  }, []);
 
   // Handle dynamic route parents (e.g. /shop/123 → /shop)
   let parent = PARENTS[pathname];
@@ -37,35 +59,80 @@ export function StickyHeader({ title = "" }) {
     title = "DONGAETAN";
   }
 
+  // Determine what button to render on the left side
+  const renderLeftButton = () => {
+    if (isDesktop) {
+      // DESKTOP LOGIC
+      if (!expanded) {
+        // Desktop (sidebar closed): always show open sidebar button
+        return (
+          <button
+            onClick={() => setExpanded(true)}
+            className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
+            aria-label="Expand sidebar"
+          >
+            <PanelLeft className="w-7 h-7" />
+          </button>
+        );
+      } else {
+        // Desktop (sidebar open): show chevron when appropriate
+        // Chevron is appropriate only on non-home pages
+        if (!isHome) {
+          return (
+            <button
+              onClick={handleBack}
+              className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
+              aria-label="Go back"
+            >
+              <ChevronLeft className="w-7 h-7" /> {/* Back Arrow icon */}
+            </button>
+          );
+        }
+        // If isHome and expanded on desktop, left slot is empty (sidebar toggle is inside sidebar)
+        return null;
+      }
+    } else {
+      // MOBILE LOGIC
+      // Mobile: only show chevron when appropriate (i.e., not on homepage)
+      if (!isHome) {
+        return (
+          <button
+            onClick={handleBack}
+            className="cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid"
+            aria-label="Go back"
+          >
+            <ChevronLeft className="w-7 h-7" /> {/* Back Arrow icon */}
+          </button>
+        );
+      }
+      return null;
+    }
+  };
+
   return (
-    <header className="sticky top-0 left-0 right-0 z-30 bg-white h-16 flex items-center px-4 md:px-8">
-      {/* Back arrow (hidden on home) */}
-      <button
-        onClick={handleBack}
-        className={`mr-2 transition-opacity ${
-          isHome ? "opacity-0 pointer-events-none" : "opacity-100"
-        } cursor-pointer`}
-        aria-label="Go back"
-      >
-        <ChevronLeft className="w-7 h-7 text-indigo-400" />
-      </button>
+    <header className="sticky top-0 left-0 right-0 z-30 flex items-center py-6 2xl:py-8 px-[1vw]">
+      {/* Left-side slot for the dynamically rendered button */}
+      <div className="flex items-center w-7 h-7">{renderLeftButton()}</div>
+
       {/* Centered title */}
       <div className="flex-1 flex justify-center items-center">
-        <span className="font-medium text-lg text-black truncate">{title}</span>
+        <span className="font-normal text-lg text-foreground truncate">
+          {title}
+        </span>
       </div>
       {/* Shopping cart icon */}
-      <div className="relative ml-auto flex items-center cursor-pointer" onClick={toggleCart}>
-        <ShoppingCart
-          className={`w-7 h-7 ${
-            cartCount > 0 ? "text-indigo-400" : "text-gray-400"
-          }`}
-        />
+      <button
+        className="relative ml-auto gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
+        onClick={toggleCart}
+      >
+        <ShoppingCart className="size-7" />
+
         {cartCount > 0 && (
-          <span className="absolute -top-1 -right-2 bg-indigo-400 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
             {cartCount}
           </span>
         )}
-      </div>
+      </button>
     </header>
   );
 }
