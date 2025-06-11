@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { products } from "@/data/products"; // Import the centralized products list
+import { shopProducts } from "@/data/products"; // Import the centralized products list
 import { useState } from "react";
-import { useCart } from "@/components/CartContext";
+import { useCart } from "@/components/cart/CartContext";
 import { useParams } from "next/navigation";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = products.find((p) => p.id == parseInt(id as string));
+  const product = shopProducts.find((p) => p.id == parseInt(id as string));
   const SIZES = product?.sizes || [];
   const [selectedSize, setSelectedSize] = useState(SIZES[0]);
   const [quantity, setQuantity] = useState(1);
@@ -35,7 +35,7 @@ export default function ProductDetail() {
       <div className="w-full max-w-5xl flex flex-col md:flex-row gap-8 md:gap-24 rounded-2xl p-6">
         <div className="flex flex-col justify-center items-center">
           <Image
-            src={product.image}
+            src={product.images[0]}
             alt={product.name}
             width={500}
             height={500}

@@ -2,7 +2,7 @@ import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ResponsiveLayoutWrapper from "@/components/ResponsiveLayoutWrapper";
 import { SidebarProvider } from "@/components/SidebarContext";
-import { CartProvider } from "@/components/CartContext";
+import { CartProvider } from "@/components/cart/CartContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",

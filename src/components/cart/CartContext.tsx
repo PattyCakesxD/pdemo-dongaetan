@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { products as allProducts } from "@/data/products";
+import { shopProducts as allProducts } from "@/data/products";
 
 // Define the shape of an item in the cart
 export interface CartItem {
@@ -50,7 +50,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       } else {
         const productDetails = allProducts.find((p) => p.id === newItem.id);
         if (!productDetails) return prevItems;
-        const imageSrc = productDetails.image;
+        const imageSrc = productDetails.images[0];
         return [
           ...prevItems,
           {
@@ -62,14 +62,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
         ];
       }
     });
-    setIsOpen(true); // Open cart when item is added
+    setIsOpen(true);
   };
 
   const removeFromCart = (productId: number, size: string) => {
     setCartItems((prevItems) =>
-      prevItems.filter(
-        (item) => !(item.id === productId && item.size === size)
-      )
+      prevItems.filter((item) => !(item.id === productId && item.size === size))
     );
   };
 

@@ -1,13 +1,16 @@
+import Link from "next/link";
+
 export function NavLogo() {
   return (
-    <div className="grid grid-cols-3 gap-2 mb-6 w-full max-w-md px-4">
+    <div className="grid grid-cols-3 gap-6">
       {"DONGAETAN".split("").map((letter, i) => (
-        <div
+        <Link
+          href={"/"}
           key={i}
-          className="w-full h-full flex items-center justify-center rounded-full text-4xl font-semibold aspect-square bg-gray-100 "
+          className="size-[95px] flex items-center justify-center rounded-full text-[40px] font-semibold bg-gray-100 "
         >
           {letter}
-        </div>
+        </Link>
       ))}
     </div>
   );
