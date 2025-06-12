@@ -180,14 +180,14 @@ export function Cart() {
                 ) : (
                   <ul className="flex flex-col">
                     {[...cartItems].reverse().map((item) => (
-                      <CartItem // <--- Use CartItem component here
-                        key={`${item.id}-${item.size}`}
+                      <CartItem
+                        key={`${item.id}-${item.size || "no-size"}`}
                         item={item}
                         itemVariants={itemVariants}
                         increaseQuantity={increaseQuantity}
                         decreaseQuantity={decreaseQuantity}
                         removeFromCart={removeFromCart}
-                        toggleCart={toggleCart} // <--- Pass toggleCart to CartItem
+                        toggleCart={toggleCart}
                       />
                     ))}
                   </ul>

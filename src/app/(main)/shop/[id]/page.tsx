@@ -9,8 +9,12 @@ import { useParams } from "next/navigation";
 export default function ProductDetail() {
   const { id } = useParams();
   const product = shopProducts.find((p) => p.id == parseInt(id as string));
+
   const SIZES = product?.sizes || [];
-  const [selectedSize, setSelectedSize] = useState(SIZES[0]);
+  const AVAILABLE_SIZES = product?.availableSizes || [];
+
+  const [selectedSize, setSelectedSize] = useState(AVAILABLE_SIZES[0]);
+
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
@@ -21,7 +25,12 @@ export default function ProductDetail() {
         quantity: quantity,
         size: selectedSize,
       });
-    } else if (!selectedSize) {
+    } else if (product && SIZES.length === 0) {
+      addToCart({
+        id: product.id,
+        quantity: quantity,
+      });
+    } else if (!selectedSize && SIZES.length > 0) {
       alert("Please select a size.");
     }
   };
@@ -44,6 +53,7 @@ export default function ProductDetail() {
         </div>
         <div className="flex-1 flex flex-col justify-between gap-4">
           <div className="flex flex-col gap-2">
+            {/* Product Info */}
             <h2 className="text-xl md:text-2xl text-semibold">
               {product.name}
             </h2>
@@ -51,55 +61,79 @@ export default function ProductDetail() {
             <p className="text-sm md:text-base text-secondaryLabel break-all">
               {product.description}
             </p>
-          </div>
 
-          {/* Sizes */}
-          <div className="flex flex-col">
-            <div className="text-xs mb-1">Size</div>
-            <div className="flex gap-5 text-sm md:text-md">
-              {SIZES.map((size) => (
-                <span
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`cursor-pointer select-none transition-colors duration-100 whitespace-nowrap ${
-                    selectedSize === size
-                      ? "font-semibold"
-                      : "text-secondaryLabel hover:text-tertiaryLabel"
-                  }`}
+            {(product.stock ?? 0) > 0 && (
+              <div className="flex flex-col gap-2 mt-1">
+                {/* Sizes */}
+                {AVAILABLE_SIZES.length > 0 && (
+                  <>
+                    <div className="text-xs">Size</div>
+                    <div className="flex gap-5 text-sm md:text-md mb-2">
+                      {SIZES.map((size) => {
+                        const isAvailable = AVAILABLE_SIZES.includes(size);
+
+                        return (
+                          <span
+                            key={size}
+                            onClick={
+                              isAvailable
+                                ? () => setSelectedSize(size)
+                                : undefined
+                            }
+                            className={`select-none transition-colors duration-100 whitespace-nowrap ${
+                              isAvailable
+                                ? `cursor-pointer ${
+                                    selectedSize === size
+                                      ? "font-semibold"
+                                      : "text-secondaryLabel hover:text-tertiaryLabel"
+                                  }`
+                                : "text-tertiaryLabel cursor-not-allowed" // TODO: Change to a more distinct color
+                            }`}
+                          >
+                            {size}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+
+                {/* Quantity */}
+                <div className="text-xs">QTY</div>
+                <select
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  className="w-20 border border-tertiaryLabel rounded-md py-1 px-2 text-base cursor-pointer"
                 >
-                  {size}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Quantity */}
-          <div className="flex flex-col">
-            <div className="text-xs mb-1">QTY</div>
-            <select
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-20 border border-tertiaryLabel rounded-md py-1 px-2 text-md cursor-pointer"
-            >
-              {[...Array(10)].map((_, idx) => (
-                <option key={idx + 1} value={idx + 1}>
-                  {idx + 1}
-                </option>
-              ))}
-            </select>
+                  {[...Array(10)].map((_, idx) => (
+                    <option key={idx + 1} value={idx + 1}>
+                      {idx + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
 
           {/* Checkout/Add to Cart */}
           <div className="flex flex-col gap-1">
-            <button className="bg-primaryBlue hover:bg-hoverBlue text-background py-2 w-full rounded-lg transition-colors duration-100 ease-fluid cursor-pointer">
-              Checkout
-            </button>
-            <button
-              onClick={handleAddToCart}
-              className="text-primaryBlue py-2 w-full rounded-lg border border-primaryBlue hover:bg-hoverBlueBg transition-colors duration-100 ease-fluid cursor-pointer"
-            >
-              Add to Cart
-            </button>
+            {product.stock && product.stock > 0 ? (
+              <>
+                <button className="bg-primaryBlue hover:bg-hoverBlue text-background py-2 w-full rounded-lg transition-colors duration-100 ease-fluid cursor-pointer">
+                  Checkout
+                </button>
+                <button
+                  onClick={handleAddToCart}
+                  className="text-primaryBlue py-2 w-full rounded-lg border border-primaryBlue hover:bg-hoverBlueBg transition-colors duration-100 ease-fluid cursor-pointer"
+                >
+                  Add to Cart
+                </button>
+              </>
+            ) : (
+              <button className="bg-tertiaryLabel text-background py-2 w-full rounded-lg">
+                Out of Stock
+              </button>
+            )}
           </div>
         </div>
       </div>
