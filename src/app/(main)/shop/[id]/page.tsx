@@ -119,7 +119,7 @@ export default function ProductDetail() {
 
           {/* Checkout/Add to Cart */}
           <div className="flex flex-col gap-1">
-            {product.stock && product.stock > 0 ? (
+            {(product.stock ?? 0) > 0 ? (
               <>
                 <button className="bg-primaryBlue hover:bg-hoverBlue text-background py-2 w-full rounded-lg transition-colors duration-100 ease-fluid cursor-pointer">
                   Checkout
@@ -133,7 +133,7 @@ export default function ProductDetail() {
               </>
             ) : (
               <button className="bg-tertiaryLabel text-background py-2 w-full rounded-lg">
-                Out of Stock
+                Sold out
               </button>
             )}
           </div>
