@@ -32,6 +32,8 @@ export default function ProductDetail() {
       });
     } else if (!selectedSize && SIZES.length > 0) {
       alert("Please select a size.");
+    } else {
+      alert("Something went wrong. Please try again later.");
     }
   };
 
