@@ -5,6 +5,13 @@ import { shopProducts } from "@/data/products";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useParams } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -102,17 +109,21 @@ export default function ProductDetail() {
 
                 {/* Quantity */}
                 <div className="text-xs">QTY</div>
-                <select
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="w-20 border border-tertiaryLabel rounded-md py-1 px-2 text-base cursor-pointer"
+                <Select
+                  value={String(quantity)}
+                  onValueChange={(value) => setQuantity(Number(value))}
                 >
-                  {[...Array(10)].map((_, idx) => (
-                    <option key={idx + 1} value={idx + 1}>
-                      {idx + 1}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-20">
+                    <SelectValue placeholder="Quantity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[...Array(10)].map((_, idx) => (
+                      <SelectItem key={idx + 1} value={String(idx + 1)}>
+                        {idx + 1}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             )}
           </div>
