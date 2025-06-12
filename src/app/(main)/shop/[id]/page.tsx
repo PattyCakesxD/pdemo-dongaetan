@@ -19,7 +19,7 @@ export default function ProductDetail() {
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
-    if (product && selectedSize) {
+    if (product && selectedSize && AVAILABLE_SIZES.includes(selectedSize)) {
       addToCart({
         id: product.id,
         quantity: quantity,
