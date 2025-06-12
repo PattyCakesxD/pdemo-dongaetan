@@ -134,6 +134,13 @@ body {
   );
 }
 
+[data-slot="select-trigger"] {
+  background-color: var(--select-background);
+  &:hover {
+    background-color: var(--select-item-background);
+  }
+}
+
 [data-slot="select-item"][data-highlighted] {
   background-color: var(--select-item-background);
 }
