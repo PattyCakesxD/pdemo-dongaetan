@@ -95,9 +95,12 @@ export default function ProductDetail() {
               price={product.price}
               description={product.description}
             />
+          </div>
 
+          {/* Checkout/Add to Cart */}
+          <div className="flex flex-col gap-1">
             {(product.stock ?? 0) > 0 && (
-              <div className="flex flex-col gap-2 mt-1">
+              <div className="flex flex-col gap-2 mb-2">
                 {/* Sizes */}
                 <ProductSizes
                   sizes={SIZES}
@@ -113,10 +116,7 @@ export default function ProductDetail() {
                 />
               </div>
             )}
-          </div>
 
-          {/* Checkout/Add to Cart */}
-          <div className="flex flex-col gap-1">
             {(product.stock ?? 0) > 0 ? (
               <>
                 <button className="bg-primaryBlue hover:bg-hoverBlue text-background py-2 w-full rounded-lg transition-colors duration-100 ease-fluid cursor-pointer">
@@ -347,7 +347,7 @@ function ProductCarousel({
     <div className="flex flex-col gap-2">
       <Carousel
         setApi={setApi}
-        className="w-full max-w-4xl"
+        className="w-full max-w-4xl group"
         opts={{ startIndex: currentSlide }}
       >
         <CarouselContent>
@@ -372,8 +372,8 @@ function ProductCarousel({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="group-hover:opacity-100 opacity-0" />
+        <CarouselNext className="group-hover:opacity-100 opacity-0" />
       </Carousel>
       <ProductCarouselDots
         count={images.length}
