@@ -4,6 +4,7 @@ import { ShoppingCart, ChevronLeft, PanelLeft } from "lucide-react";
 import { useCart } from "./cart/CartContext";
 import { useSidebar } from "@/components/SidebarContext";
 import { useEffect, useState } from "react";
+import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 
 const PARENTS: Record<string, string> = {
   "/shop": "/",
@@ -121,18 +122,21 @@ export function StickyHeader({ title = "" }) {
         </span>
       </div>
       {/* Shopping cart icon */}
-      <button
-        className="relative gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
-        onClick={toggleCart}
-      >
-        <ShoppingCart className="size-7" />
+      <div className="flex items-center gap-2">
+        <ThemeToggleButton className="mr-2" />
+        <button
+          className="relative gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
+          onClick={toggleCart}
+        >
+          <ShoppingCart className="size-7" />
 
-        {cartCount > 0 && (
-          <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
-            {cartCount}
-          </span>
-        )}
-      </button>
+          {cartCount > 0 && (
+            <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </div>
     </header>
   );
 }
