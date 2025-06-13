@@ -344,10 +344,10 @@ function ProductCarousel({
   }, [api, slide, onSlideChange]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 group">
       <Carousel
         setApi={setApi}
-        className="w-full max-w-4xl group"
+        className="w-full max-w-4xl"
         opts={{ startIndex: currentSlide }}
       >
         <CarouselContent>
@@ -372,8 +372,8 @@ function ProductCarousel({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="group-hover:opacity-100 opacity-0" />
-        <CarouselNext className="group-hover:opacity-100 opacity-0" />
+        <CarouselPrevious className="group-hover:opacity-100 opacity-0 cursor-pointer" />
+        <CarouselNext className="group-hover:opacity-100 opacity-0 cursor-pointer" />
       </Carousel>
       <ProductCarouselDots
         count={images.length}
