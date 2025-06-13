@@ -1,6 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
-import { shopProducts } from "@/data/products"; // Import the centralized products list
+import { shopProducts } from "@/data/products";
 import ProductArray from "@/components/ProductArray";
 
 export default function Shop() {
