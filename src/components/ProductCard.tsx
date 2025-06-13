@@ -19,14 +19,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <Image
         src={images[0] || ""}
-        alt={product.name}
+        alt={name}
         width={500}
         height={500}
         className="object-cover w-[300px] 3xl:w-[400px]"
         priority
       />
       <div className="flex flex-col items-center w-full">
-        <h2 className="text-lg w-full text-center mt-2">{product.name}</h2>
+        <h2 className="text-lg w-full text-center mt-2">{name}</h2>
       </div>
     </Link>
   );

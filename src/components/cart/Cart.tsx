@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useCart } from "./CartContext";
-import { X, Plus, Minus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import {
   motion,
   AnimatePresence,
-  useMotionValue,
   cubicBezier,
 } from "motion/react";
 import { useRef } from "react";
@@ -27,6 +25,7 @@ const mainCartDialogVariants = {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const cartContentContainerVariants = {
   open: {
     opacity: 1,

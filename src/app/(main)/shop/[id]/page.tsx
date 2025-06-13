@@ -289,6 +289,7 @@ function ProductCarousel({
   onSlideChange?: (index: number) => void;
 }) {
   const [api, setApi] = useState<CarouselApi>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(slide);
 
   const dragStart = useRef<{ x: number; y: number } | null>(null);
