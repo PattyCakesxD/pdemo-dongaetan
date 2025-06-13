@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useCart } from "./CartContext";
-import { X, Plus, Minus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import {
   motion,
   AnimatePresence,
-  useMotionValue,
   cubicBezier,
 } from "motion/react";
 import { useRef } from "react";
@@ -27,6 +25,7 @@ const mainCartDialogVariants = {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const cartContentContainerVariants = {
   open: {
     opacity: 1,
@@ -180,14 +179,14 @@ export function Cart() {
                 ) : (
                   <ul className="flex flex-col">
                     {[...cartItems].reverse().map((item) => (
-                      <CartItem // <--- Use CartItem component here
-                        key={`${item.id}-${item.size}`}
+                      <CartItem
+                        key={`${item.id}-${item.size || "no-size"}`}
                         item={item}
                         itemVariants={itemVariants}
                         increaseQuantity={increaseQuantity}
                         decreaseQuantity={decreaseQuantity}
                         removeFromCart={removeFromCart}
-                        toggleCart={toggleCart} // <--- Pass toggleCart to CartItem
+                        toggleCart={toggleCart}
                       />
                     ))}
                   </ul>

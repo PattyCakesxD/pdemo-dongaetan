@@ -3,6 +3,7 @@ import "./globals.css";
 import ResponsiveLayoutWrapper from "@/components/ResponsiveLayoutWrapper";
 import { SidebarProvider } from "@/components/SidebarContext";
 import { CartProvider } from "@/components/cart/CartContext";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -20,15 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <CartProvider>
-          <SidebarProvider>
-            <ResponsiveLayoutWrapper>{children}</ResponsiveLayoutWrapper>
-          </SidebarProvider>
-        </CartProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <CartProvider>
+            <SidebarProvider>
+              <ResponsiveLayoutWrapper>{children}</ResponsiveLayoutWrapper>
+            </SidebarProvider>
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

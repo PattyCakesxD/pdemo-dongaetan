@@ -81,7 +81,7 @@
   --color-hoverBlueBg: var(--hoverBlueBg);
   --color-secondaryRed: var(--secondaryRed);
   --color-iosBlue: var(--iosBlue);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
 
   --ease-fluid: cubic-bezier(0.6, 0.01, -0.05, 0.9);
@@ -99,19 +99,50 @@
   --hoverBlue: oklch(0.651 0.1204 269.39);
   --secondaryRed: oklch(0.5804 0.1409 6.98);
   --iosblue: oklch(0.6567 0.186455 254.2212);
+
+  --select-background: var(--background);
+  --select-foreground: var(--foreground);
+  --select-item-background: oklch(0.93 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0 0 0);
-    --foreground: oklch(1 0 0);
-    --secondaryLabel: oklch(0.6453 0.0088 286.15);
-    --tertiaryLabel: oklch(0.399 0.005 286.17);
-  }
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --secondaryLabel: oklch(0.6453 0.0088 286.15);
+  --tertiaryLabel: oklch(0.399 0.005 286.17);
+
+  --select-background: oklch(0.15 0 0);
+  --select-foreground: var(--foreground);
+  --select-item-background: oklch(0.25 0 0);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  
+  transition-property: background-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 150ms;
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+/* TEMPORARY FIX FOR SELECT COMPONENT */
+[data-slot="select-content"] {
+  background-color: var(--select-background);
+  color: var(--foreground);
+  border-width: 1px;
+  border-color: var(--tertiaryLabel);
+}
+
+[data-slot="select-trigger"] {
+  background-color: var(--select-background);
+  &:hover {
+    background-color: var(--select-item-background);
+  }
+}
+
+[data-slot="select-item"][data-highlighted] {
+  background-color: var(--select-item-background);
 }

@@ -4,6 +4,7 @@ import { ShoppingCart, ChevronLeft, PanelLeft } from "lucide-react";
 import { useCart } from "./cart/CartContext";
 import { useSidebar } from "@/components/SidebarContext";
 import { useEffect, useState } from "react";
+import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 
 const PARENTS: Record<string, string> = {
   "/shop": "/",
@@ -110,29 +111,32 @@ export function StickyHeader({ title = "" }) {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-30 flex items-center py-6 2xl:py-8 px-[1vw]">
+    <header className="sticky top-0 left-0 right-0 z-30 flex items-center justify-between py-6 2xl:py-8 px-[1vw]">
       {/* Left-side slot for the dynamically rendered button */}
       <div className="flex items-center w-7 h-7">{renderLeftButton()}</div>
 
       {/* Centered title */}
-      <div className="flex-1 flex justify-center items-center">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <span className="font-normal text-lg text-foreground truncate">
           {title}
         </span>
       </div>
       {/* Shopping cart icon */}
-      <button
-        className="relative ml-auto gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
-        onClick={toggleCart}
-      >
-        <ShoppingCart className="size-7" />
+      <div className="flex items-center gap-2">
+        <ThemeToggleButton className="mr-2" />
+        <button
+          className="relative gap-2 flex items-center cursor-pointer text-primaryBlue hover:text-hoverBlue transition-colors duration-100 ease-fluid group"
+          onClick={toggleCart}
+        >
+          <ShoppingCart className="size-7" />
 
-        {cartCount > 0 && (
-          <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
-            {cartCount}
-          </span>
-        )}
-      </button>
+          {cartCount > 0 && (
+            <span className="bg-primaryBlue group-hover:bg-hoverBlue duration-100 ease-fluid text-background text-sm leading-none rounded-full size-7 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </div>
     </header>
   );
 }

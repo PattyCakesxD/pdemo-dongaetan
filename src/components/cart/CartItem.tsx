@@ -57,7 +57,7 @@ export function CartItem({
             {item.name}
           </h3>
           <p className="text-base text-secondaryLabel mb-2">
-            Size: {item.size}
+            {item.size ? `Size: ${item.size}` : ""}
           </p>
 
           <div className="flex items-center gap-4">
